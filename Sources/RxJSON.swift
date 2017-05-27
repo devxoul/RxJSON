@@ -38,7 +38,10 @@ public extension ObservableType where E: Any {
       guard let json = any as? [String: Any] else {
         throw RxJSONError.failedCasting(json: any, key: key, type: [String: Any].self)
       }
-      guard let value = json[key] as? T else {
+      guard let rawValue = json[key] else {
+        throw RxJSONError.foundNil(json: json, key: key)
+      }
+      guard let value = rawValue as? T else {
         throw RxJSONError.failedCasting(json: any, key: key, type: T.self)
       }
       return value
@@ -55,7 +58,10 @@ public extension ObservableType where E == Dictionary<String, Any> {
   /// - returns: An observable sequence whose elements are the value of each element of source.
   public func mapJSON(_ key: String) -> Observable<[String: Any]> {
     return self.map { json in
-      guard let value = json[key] as? [String: Any] else {
+      guard let rawValue = json[key] else {
+        throw RxJSONError.foundNil(json: json, key: key)
+      }
+      guard let value = rawValue as? [String: Any] else {
         throw RxJSONError.failedCasting(json: json, key: key, type: [String: Any].self)
       }
       return value
