@@ -49,6 +49,16 @@ class AnyObservableTests: XCTestCase {
     )
   }
 
+  func testMapJSONWithType_failure_invalidDictionary() {
+    let json: [String] = ["Swift", "Python", "JavaScript"]
+    XCTAssertThrowsError(
+      try Observable<Any>.just(json)
+        .mapJSON("Swift", String.self)
+        .toBlocking()
+        .first()!
+    )
+  }
+
   func testMapJSONWithType_success() {
     let json: [String: Any] = ["name": "devxoul"]
     let value = try! Observable<Any>.just(json)
