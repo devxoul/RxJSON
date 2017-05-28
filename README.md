@@ -1,4 +1,4 @@
-# RxViewController
+# RxJSON
 
 ![Swift](https://img.shields.io/badge/Swift-3.1-orange.svg)
 [![CocoaPods](http://img.shields.io/cocoapods/v/RxJSON.svg)](https://cocoapods.org/pods/RxJSON)
@@ -48,4 +48,4 @@ source.mapJSON("name", Int.key) // Event.error(RxJSONError.failedCasting)
 
 ## License
 
-RxViewController is under MIT license. See the [LICENSE](LICENSE) file for more info.
+RxJSON is under MIT license. See the [LICENSE](LICENSE) file for more info.
