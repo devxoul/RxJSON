@@ -46,6 +46,16 @@ source.mapJSON("name", Int.key) // Event.error(RxJSONError.failedCasting)
 
     This is not supported yet. See [Carthage#1945](https://github.com/Carthage/Carthage/pull/1945) for details.
 
+## Contributing
+
+Any discussions and pull requests are welcomed 💖
+
+To create a Xcode project:
+
+```console
+$ swift package generate-xcodeproj
+```
+
 ## License
 
 RxJSON is under MIT license. See the [LICENSE](LICENSE) file for more info.
