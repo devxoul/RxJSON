@@ -3,126 +3,126 @@ import RxSwift
 import RxBlocking
 import RxJSON
 
-class DictionaryTests: XCTestCase {
+class ArrayTests: XCTestCase {
 
   // MARK: mapJSON(key:)
 
-  func testMapJSONWithKey_throws_whenJSONIsNotDictionary() {
+  func testMapJSONWithIndex_throws_whenJSONIsNotArray() {
+    let json: [String: Any] = ["name": "devxoul"]
+    XCTAssertThrowsError(
+      try Observable<Any>.just(json)
+        .mapJSON(at: 0)
+        .toBlocking()
+        .first()!
+    )
+    XCTAssertThrowsError(
+      try Single<Any>.just(json)
+        .mapJSON(at: 0)
+        .toBlocking()
+        .first()!
+    )
+  }
+
+  func testMapJSONWithIndex_throws_whenIndexNotExists() {
     let json: [Any] = ["Swift", "Python", "JavaScript"]
     XCTAssertThrowsError(
       try Observable<Any>.just(json)
-        .mapJSON("Swift")
-        .toBlocking()
-        .first()!
-    )
-    XCTAssertThrowsError(
-      try Single<Any>.just(json)
-        .mapJSON("Swift")
-        .toBlocking()
-        .first()!
-    )
-  }
-
-  func testMapJSONWithKey_throws_whenKeyNotExists() {
-    let json: [String: Any] = ["name": "devxoul"]
-    XCTAssertThrowsError(
-      try Observable<Any>.just(json)
-        .mapJSON("email")
+        .mapJSON(at: 3)
         .toBlocking()
         .first()
     )
     XCTAssertThrowsError(
       try Single<Any>.just(json)
-        .mapJSON("email")
+        .mapJSON(at: 3)
         .toBlocking()
         .first()
     )
   }
 
-  func testMapJSONWithKey_succeeds() {
-    let json: [String: Any] = ["name": "devxoul"]
+  func testMapJSONWithIndex_succeeds() {
+    let json: [Any] = ["Swift", "Python", "JavaScript"]
     XCTAssertEqual(
       try Observable<Any>.just(json)
-        .mapJSON("name")
+        .mapJSON(at: 1)
         .toBlocking()
         .first() as! String,
-      "devxoul"
+      "Python"
     )
     XCTAssertEqual(
       try Single<Any>.just(json)
-        .mapJSON("name")
+        .mapJSON(at: 1)
         .toBlocking()
         .first() as! String,
-      "devxoul"
+      "Python"
     )
   }
 
 
   // MARK: mapJSON(key:type:)
 
-  func testMapJSONWithKeyAndType_throws_whenJSONIsNotDictionary() {
+  func testMapJSONWithIndexAndType_throws_whenJSONIsNotArray() {
+    let json: [String: Any] = ["name": 123]
+    XCTAssertThrowsError(
+      try Observable<Any>.just(json)
+        .mapJSON(at: 0, Int.self)
+        .toBlocking()
+        .first()!
+    )
+    XCTAssertThrowsError(
+      try Single<Any>.just(json)
+        .mapJSON(at: 0, Int.self)
+        .toBlocking()
+        .first()!
+    )
+  }
+
+  func testMapJSONWithIndexAndType_throws_whenIndexNotExists() {
     let json: [Any] = ["Swift", "Python", "JavaScript"]
     XCTAssertThrowsError(
       try Observable<Any>.just(json)
-        .mapJSON("Swift", String.self)
+        .mapJSON(at: 3, String.self)
         .toBlocking()
         .first()!
     )
     XCTAssertThrowsError(
       try Single<Any>.just(json)
-        .mapJSON("Swift", String.self)
+        .mapJSON(at: 3, String.self)
         .toBlocking()
         .first()!
     )
   }
 
-  func testMapJSONWithKeyAndType_throws_whenKeyNotExists() {
-    let json: [String: Any] = ["name": 123]
+  func testMapJSONWithIndexAndType_throws_whenFailedToCast() {
+    let json: [Any] = ["Swift", "Python", "JavaScript"]
     XCTAssertThrowsError(
       try Observable<Any>.just(json)
-        .mapJSON("age", String.self)
+        .mapJSON(at: 2, Int.self)
         .toBlocking()
         .first()!
     )
     XCTAssertThrowsError(
       try Single<Any>.just(json)
-        .mapJSON("age", String.self)
+        .mapJSON(at: 2, Int.self)
         .toBlocking()
         .first()!
     )
   }
 
-  func testMapJSONWithKeyAndType_throws_whenFailedToCast() {
-    let json: [String: Any] = ["name": 123]
-    XCTAssertThrowsError(
-      try Observable<Any>.just(json)
-        .mapJSON("name", String.self)
-        .toBlocking()
-        .first()!
-    )
-    XCTAssertThrowsError(
-      try Single<Any>.just(json)
-        .mapJSON("name", String.self)
-        .toBlocking()
-        .first()!
-    )
-  }
-
-  func testMapJSONWithKeyAndType_succeeds() {
-    let json: [String: Any] = ["name": "devxoul"]
+  func testMapJSONWithIndexAndType_succeeds() {
+    let json: [Any] = ["Swift", "Python", "JavaScript"]
     XCTAssertEqual(
       try Observable<Any>.just(json)
-        .mapJSON("name", String.self)
+        .mapJSON(at: 0, String.self)
         .toBlocking()
         .first()!,
-      "devxoul"
+      "Swift"
     )
     XCTAssertEqual(
       try Single<Any>.just(json)
-        .mapJSON("name", String.self)
+        .mapJSON(at: 0, String.self)
         .toBlocking()
         .first()!,
-      "devxoul"
+      "Swift"
     )
   }
 
@@ -130,10 +130,13 @@ class DictionaryTests: XCTestCase {
   // MARK: Nested
 
   func testMapJSON_nested_succeeds() {
-    let json: [String: Any] = ["user": ["name": "devxoul"]]
+    let json: [Any] = [
+      ["name": "devxoul"],
+      ["name": "helloworld"],
+    ]
     XCTAssertEqual(
       try Observable<Any>.just(json)
-        .mapJSON("user")
+        .mapJSON(at: 0)
         .mapJSON("name", String.self)
         .toBlocking()
         .first()!,
@@ -141,7 +144,7 @@ class DictionaryTests: XCTestCase {
     )
     XCTAssertEqual(
       try Single<Any>.just(json)
-        .mapJSON("user")
+        .mapJSON(at: 0)
         .mapJSON("name", String.self)
         .toBlocking()
         .first()!,
