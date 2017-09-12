@@ -18,19 +18,28 @@ URLSession.shared.rx.json(url: "https://api.github.com/repos/ReactorKit/ReactorK
   .bind(to: ownerNameLabel.rx.text)
 ```
 
-`mapJSON()` will return `Observable<Any>` if you don't specify the type and `Observable<T>` if you specify the type `T`. It will return `Observable<[String: Any]>` if the element of the source observable is already a json dictionary.
+`mapJSON()` supports both JSON dictionary and array:
 
 ```swift
+// Dictionary
 Observable<Any>.mapJSON("key")           // Observable<Any>
 Observable<Any>.mapJSON("key", Int.self) // Observable<Int>
-Observable<[String: Any]>.mapJSON("key") // Observable<[String: Any]>
+
+// Array
+Observable<Any>.mapJSON(at: 2)              // Observable<Any>
+Observable<Any>.mapJSON(at: 3, String.self) // Observable<String>
 ```
 
-`mapJSON()` will throw a `RxJSONError` when there's no value for given key or fails to cast to a given type.
+`mapJSON()` will throw a `RxJSONError` when there's no value for given accessor or fails to cast to a given type:
 
 ```swift
-source.mapJSON("unknownKey") // Event.error(RxJSONError.foundNil)
-source.mapJSON("name", Int.key) // Event.error(RxJSONError.failedCasting)
+// Dictionary
+source.mapJSON("unknownKey")    // Event.error(RxJSONError.valueNotFound)
+source.mapJSON("name", Int.key) // Event.error(RxJSONError.castingFailed)
+
+// Array
+source.mapJSON(at: -1)          // Event.error(RxJSONError.valueNotFound)
+source.mapJSON(at: 0, Int.key)  // Event.error(RxJSONError.castingFailed)
 ```
 
 ## Installation
