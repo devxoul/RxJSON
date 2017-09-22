@@ -21,6 +21,12 @@ class DictionaryTests: XCTestCase {
         .toBlocking()
         .first()!
     )
+    XCTAssertThrowsError(
+      try Maybe<Any>.just(json)
+        .mapJSON("Swift")
+        .toBlocking()
+        .first()!
+    )
   }
 
   func testMapJSONWithKey_throws_whenKeyNotExists() {
@@ -33,6 +39,12 @@ class DictionaryTests: XCTestCase {
     )
     XCTAssertThrowsError(
       try Single<Any>.just(json)
+        .mapJSON("email")
+        .toBlocking()
+        .first()
+    )
+    XCTAssertThrowsError(
+      try Maybe<Any>.just(json)
         .mapJSON("email")
         .toBlocking()
         .first()
@@ -50,6 +62,13 @@ class DictionaryTests: XCTestCase {
     )
     XCTAssertEqual(
       try Single<Any>.just(json)
+        .mapJSON("name")
+        .toBlocking()
+        .first() as! String,
+      "devxoul"
+    )
+    XCTAssertEqual(
+      try Maybe<Any>.just(json)
         .mapJSON("name")
         .toBlocking()
         .first() as! String,
@@ -74,6 +93,12 @@ class DictionaryTests: XCTestCase {
         .toBlocking()
         .first()!
     )
+    XCTAssertThrowsError(
+      try Maybe<Any>.just(json)
+        .mapJSON("Swift", String.self)
+        .toBlocking()
+        .first()!
+    )
   }
 
   func testMapJSONWithKeyAndType_throws_whenKeyNotExists() {
@@ -90,6 +115,12 @@ class DictionaryTests: XCTestCase {
         .toBlocking()
         .first()!
     )
+    XCTAssertThrowsError(
+      try Maybe<Any>.just(json)
+        .mapJSON("age", String.self)
+        .toBlocking()
+        .first()!
+    )
   }
 
   func testMapJSONWithKeyAndType_throws_whenFailedToCast() {
@@ -102,6 +133,12 @@ class DictionaryTests: XCTestCase {
     )
     XCTAssertThrowsError(
       try Single<Any>.just(json)
+        .mapJSON("name", String.self)
+        .toBlocking()
+        .first()!
+    )
+    XCTAssertThrowsError(
+      try Maybe<Any>.just(json)
         .mapJSON("name", String.self)
         .toBlocking()
         .first()!
@@ -124,6 +161,13 @@ class DictionaryTests: XCTestCase {
         .first()!,
       "devxoul"
     )
+    XCTAssertEqual(
+      try Maybe<Any>.just(json)
+        .mapJSON("name", String.self)
+        .toBlocking()
+        .first()!,
+      "devxoul"
+    )
   }
 
 
@@ -141,6 +185,14 @@ class DictionaryTests: XCTestCase {
     )
     XCTAssertEqual(
       try Single<Any>.just(json)
+        .mapJSON("user")
+        .mapJSON("name", String.self)
+        .toBlocking()
+        .first()!,
+      "devxoul"
+    )
+    XCTAssertEqual(
+      try Maybe<Any>.just(json)
         .mapJSON("user")
         .mapJSON("name", String.self)
         .toBlocking()

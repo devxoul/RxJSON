@@ -21,6 +21,12 @@ class ArrayTests: XCTestCase {
         .toBlocking()
         .first()!
     )
+    XCTAssertThrowsError(
+      try Maybe<Any>.just(json)
+        .mapJSON(at: 0)
+        .toBlocking()
+        .first()!
+    )
   }
 
   func testMapJSONWithIndex_throws_whenIndexNotExists() {
@@ -33,6 +39,12 @@ class ArrayTests: XCTestCase {
     )
     XCTAssertThrowsError(
       try Single<Any>.just(json)
+        .mapJSON(at: 3)
+        .toBlocking()
+        .first()
+    )
+    XCTAssertThrowsError(
+      try Maybe<Any>.just(json)
         .mapJSON(at: 3)
         .toBlocking()
         .first()
@@ -50,6 +62,13 @@ class ArrayTests: XCTestCase {
     )
     XCTAssertEqual(
       try Single<Any>.just(json)
+        .mapJSON(at: 1)
+        .toBlocking()
+        .first() as! String,
+      "Python"
+    )
+    XCTAssertEqual(
+      try Maybe<Any>.just(json)
         .mapJSON(at: 1)
         .toBlocking()
         .first() as! String,
@@ -74,6 +93,12 @@ class ArrayTests: XCTestCase {
         .toBlocking()
         .first()!
     )
+    XCTAssertThrowsError(
+      try Maybe<Any>.just(json)
+        .mapJSON(at: 0, Int.self)
+        .toBlocking()
+        .first()!
+    )
   }
 
   func testMapJSONWithIndexAndType_throws_whenIndexNotExists() {
@@ -86,6 +111,12 @@ class ArrayTests: XCTestCase {
     )
     XCTAssertThrowsError(
       try Single<Any>.just(json)
+        .mapJSON(at: 3, String.self)
+        .toBlocking()
+        .first()!
+    )
+    XCTAssertThrowsError(
+      try Maybe<Any>.just(json)
         .mapJSON(at: 3, String.self)
         .toBlocking()
         .first()!
@@ -106,6 +137,12 @@ class ArrayTests: XCTestCase {
         .toBlocking()
         .first()!
     )
+    XCTAssertThrowsError(
+      try Maybe<Any>.just(json)
+        .mapJSON(at: 2, Int.self)
+        .toBlocking()
+        .first()!
+    )
   }
 
   func testMapJSONWithIndexAndType_succeeds() {
@@ -119,6 +156,13 @@ class ArrayTests: XCTestCase {
     )
     XCTAssertEqual(
       try Single<Any>.just(json)
+        .mapJSON(at: 0, String.self)
+        .toBlocking()
+        .first()!,
+      "Swift"
+    )
+    XCTAssertEqual(
+      try Maybe<Any>.just(json)
         .mapJSON(at: 0, String.self)
         .toBlocking()
         .first()!,
@@ -144,6 +188,14 @@ class ArrayTests: XCTestCase {
     )
     XCTAssertEqual(
       try Single<Any>.just(json)
+        .mapJSON(at: 0)
+        .mapJSON("name", String.self)
+        .toBlocking()
+        .first()!,
+      "devxoul"
+    )
+    XCTAssertEqual(
+      try Maybe<Any>.just(json)
         .mapJSON(at: 0)
         .mapJSON("name", String.self)
         .toBlocking()
