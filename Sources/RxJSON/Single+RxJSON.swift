@@ -1,6 +1,6 @@
 import RxSwift
 
-public extension PrimitiveSequenceType where TraitType == SingleTrait {
+public extension PrimitiveSequenceType where Trait == SingleTrait {
   /// Converts each element to a JSON dictionary and projects each value for given key to a new
   /// observable sequence.
   ///
@@ -8,8 +8,8 @@ public extension PrimitiveSequenceType where TraitType == SingleTrait {
   /// - throws: `RxJSONError` when failed to cast each element to a JSON dictionary or failed to
   ///           find an element with given key.
   /// - returns: An observable sequence whose elements are the value of each element of source.
-  public func mapJSON(_ key: String) -> PrimitiveSequence<TraitType, ElementType> {
-    return self.map(mapJSONDictionary(key, ElementType.self))
+  func mapJSON(_ key: String) -> PrimitiveSequence<Trait, Element> {
+    return self.map(mapJSONDictionary(key, Element.self))
   }
 
   /// Converts each element to a JSON dictionary and projects each value for given key to a new
@@ -20,7 +20,7 @@ public extension PrimitiveSequenceType where TraitType == SingleTrait {
   /// - throws: `RxJSONError` when failed to cast each element to a JSON dictionary or failed to
   ///           cast an element with given key to a given type.
   /// - returns: An observable sequence whose elements are the value of each element of source.
-  public func mapJSON<T>(_ key: String, _ type: T.Type) -> PrimitiveSequence<TraitType, T> {
+  func mapJSON<T>(_ key: String, _ type: T.Type) -> PrimitiveSequence<Trait, T> {
     return self.map(mapJSONDictionary(key, type))
   }
 
@@ -31,7 +31,7 @@ public extension PrimitiveSequenceType where TraitType == SingleTrait {
   /// - throws: `RxJSONError` when failed to cast each element to a JSON array or failed to
   ///           find an element with given index.
   /// - returns: An observable sequence whose elements are the value of each element of source.
-  public func mapJSON(at index: Int) -> PrimitiveSequence<TraitType, Any> {
+  func mapJSON(at index: Int) -> PrimitiveSequence<Trait, Any> {
     return self.map(mapJSONArray(index, Any.self))
   }
 
@@ -43,7 +43,7 @@ public extension PrimitiveSequenceType where TraitType == SingleTrait {
   /// - throws: `RxJSONError` when failed to cast each element to a JSON array or failed to
   ///           find an element with given index.
   /// - returns: An observable sequence whose elements are the value of each element of source.
-  public func mapJSON<T>(at index: Int, _ type: T.Type) -> PrimitiveSequence<TraitType, T> {
+  func mapJSON<T>(at index: Int, _ type: T.Type) -> PrimitiveSequence<Trait, T> {
     return self.map(mapJSONArray(index, T.self))
   }
 }

@@ -8,7 +8,7 @@ public extension ObservableType {
   /// - throws: `RxJSONError` when failed to cast each element to a JSON dictionary or failed to
   ///           find an element with given key.
   /// - returns: An observable sequence whose elements are the value of each element of source.
-  public func mapJSON(_ key: String) -> Observable<Any> {
+  func mapJSON(_ key: String) -> Observable<Any> {
     return self.map(mapJSONDictionary(key, Any.self))
   }
 
@@ -20,7 +20,7 @@ public extension ObservableType {
   /// - throws: `RxJSONError` when failed to cast each element to a JSON dictionary or failed to
   ///           cast an element with given key to a given type.
   /// - returns: An observable sequence whose elements are the value of each element of source.
-  public func mapJSON<T>(_ key: String, _ type: T.Type) -> Observable<T> {
+  func mapJSON<T>(_ key: String, _ type: T.Type) -> Observable<T> {
     return self.map(mapJSONDictionary(key, type))
   }
 
@@ -31,7 +31,7 @@ public extension ObservableType {
   /// - throws: `RxJSONError` when failed to cast each element to a JSON array or failed to
   ///           find an element with given index.
   /// - returns: An observable sequence whose elements are the value of each element of source.
-  public func mapJSON(at index: Int) -> Observable<Any> {
+  func mapJSON(at index: Int) -> Observable<Any> {
     return self.map(mapJSONArray(index, Any.self))
   }
 
@@ -43,7 +43,7 @@ public extension ObservableType {
   /// - throws: `RxJSONError` when failed to cast each element to a JSON array or failed to
   ///           find an element with given index.
   /// - returns: An observable sequence whose elements are the value of each element of source.
-  public func mapJSON<T>(at index: Int, _ type: T.Type) -> Observable<T> {
+  func mapJSON<T>(at index: Int, _ type: T.Type) -> Observable<T> {
     return self.map(mapJSONArray(index, T.self))
   }
 }
