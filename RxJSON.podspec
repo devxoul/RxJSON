@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "RxJSON"
-  s.version          = "1.0.0"
+  s.version          = "2.0.0"
   s.summary          = "RxSwift wrapper for JSON"
   s.homepage         = "https://github.com/devxoul/RxJSON"
   s.license          = { :type => "MIT", :file => "LICENSE" }
